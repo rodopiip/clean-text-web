@@ -7,6 +7,18 @@
 <body>
 <h1>Clean Text</h1>
 <h2>This is a tool for hidden-characters scanning and cleaning of text.</h2>
-<p>{{ temp1 }}</p>
+<textarea id="input-text"></textarea>
+<button id="clean-button">clean</button>
+<button id="copy-button">copy</button>
+<!--todo-> prohibit typing in output text area-->
+<textarea id="output-text"></textarea>
 </body>
+<script>
+    let cleanButton = document.getElementById("clean-button")
+    cleanButton.addEventListener("click", async ()=>{
+        let inputText = document.getElementById("input-text")
+        let response = await fetch("/clean", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({text: inputText.value})})
+        console.log("it works AGAINN", await response.json())
+    })
+</script>
 </html>
