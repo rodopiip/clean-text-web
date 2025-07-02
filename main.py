@@ -26,4 +26,15 @@ async def say_hello(name: str):
 
 @app.post("/clean")
 async def clean_text(inbound_text: Annotated[APITransferableText, Body()]):
-    return {"clean_text": inbound_text.text}
+    raw_string = inbound_text.text
+    clean_string = ""
+    removed_ch_count = 0
+    for ch in raw_string:
+        if ch.isprintable():# or ch == "\n":
+            clean_string += ch
+        else:
+            unicode_code_point = "U+{:04X}".format(ord(ch))
+            clean_string += f"[{unicode_code_point}]"
+            removed_ch_count += 1
+    print(f"removed_ch_count: {removed_ch_count}")
+    return {"clean_text": clean_string, "removed_characters_count":removed_ch_count}
